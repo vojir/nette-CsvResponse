@@ -1,10 +1,15 @@
 {
-    "name": "ohweb/nette-csv-response",
+    "name": "vojir/nette-csv-response",
     "type": "library",
-    "description": "Nette CSV response",
-    "homepage": "https://github.com/ohweb/nette-csv-response",
-    "license": "New BSD",
+    "description": "Nette CSV Responses",
+    "homepage": "https://github.com/vojir/nette-csv-response",
+    "license": "BSD-3",
     "authors": [
+        {
+            "name": "Stanislav Vojíř",
+            "email": "stanislav.vojir@gmail.com",
+            "role": "Developer"
+        },
         {
             "name": "Vladislav Hejda",
             "email": "hejda@vspdata.cz",
@@ -17,11 +22,13 @@
         }
     ],
     "require": {
-        "nette/nette": ">=2.0.0"
+        "php": ">=5.6",
+        "nette/http": ">=2.4",
+        "nette/utils": ">=2.4"
     },
     "autoload": {
         "psr-4": {
-            "OHWeb\\Application\\Responses\\": "src/"
+            "Vojir\\Responses\\CsvResponse\\": "src/"
         }
     }
 }
