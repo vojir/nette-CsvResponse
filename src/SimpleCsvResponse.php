@@ -19,11 +19,14 @@ class SimpleCsvResponse implements Nette\Application\IResponse{
   const SEMICOLON = ';';
   const TAB = ' ';
 
-
-  /** @var bool */
+  /** @var string $bom */
+  public $utf8Bom = '';
+  /** @var bool $addHeading*/
   protected $addHeading;
+  /** @var bool $includeBom */
+  protected $includeBom;
   /** @var string $glue */
-  protected $glue = self::COMMA;
+  protected $glue = self::SEMICOLON;
   /** @var string $enclosure */
   protected $enclosure = '"';
   /** @var string $escapeChar */
@@ -56,10 +59,11 @@ class SimpleCsvResponse implements Nette\Application\IResponse{
    * @param array[]|\Traversable $data
    * @param string $filename
    * @param bool $addHeading whether add first row from data array keys (keys are taken from first row)
-   *
+   * @param bool $includeBom
    * @throws \InvalidArgumentException
    */
-  public function __construct($data, $filename = 'output.csv', $addHeading = true){
+  public function __construct($data, $filename = 'output.csv', $addHeading = true, $includeBom = false){
+    $this->utf8Bom=chr(0xEF).chr(0xBB).chr(0xBF);
     if ($data instanceof \Traversable){
       $data = iterator_to_array($data);
     }
@@ -71,6 +75,7 @@ class SimpleCsvResponse implements Nette\Application\IResponse{
     $this->data = $data;
     $this->filename = $filename;
     $this->addHeading = $addHeading;
+    $this->includeBom=$includeBom;
   }
 
 
@@ -183,6 +188,9 @@ class SimpleCsvResponse implements Nette\Application\IResponse{
     $buffer = fopen("php://output", 'w');
     // if output charset is not UTF-8
     $recode = strcasecmp($this->outputCharset, 'utf-8');
+    if(!$recode && $this->includeBom){
+      fputs($buffer, $this->utf8Bom);
+    }
     foreach ($this->data as $n => $row){
       if ($row instanceof \Traversable){
         $row = iterator_to_array($row);
