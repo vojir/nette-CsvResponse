@@ -167,7 +167,7 @@ class SimpleCsvResponse implements Nette\Application\IResponse{
    * @param Nette\Http\IRequest $httpRequest
    * @param Nette\Http\IResponse $httpResponse
    */
-  public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse){
+  public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse):void {
     $httpResponse->setContentType($this->contentType, $this->outputCharset);
     $attachment = 'attachment';
     if (!empty($this->filename)){
